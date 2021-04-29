@@ -70,7 +70,7 @@ deploy_dockerhub_x:
   only:
     - master
 
-deploy_tag_x:
+deploy_tag:
   stage: deploy
   tags: 
     - docker
@@ -82,7 +82,7 @@ deploy_tag_x:
     - docker push $CONTAINER_TAG_IMAGE
   only:
     - tags
-deploy_tag:
+deploy_tag_x:
   stage: deploy
   tags: 
     - docker
