@@ -1,11 +1,13 @@
 FROM openjdk:15-slim-buster
 
 RUN apt update && \
-	apt -y install gettext-base wget tar && \
+	apt -y install gettext-base wget unzip && \
 	rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
-RUN wget -O - https://github.com/iTXTech/mirai-console-loader/archive/refs/heads/master.tar.gz | tar --strip-components=1 - && \
+RUN wget -O mcl.zip https://github.com/iTXTech/mirai-console-loader/releases/download/v1.0.5/mcl-1.0.5.zip && \
+	unzip -q ./mcl.zip && \
+	rm mcl.zip && \
 	chmod +x ./mcl && \
 	./mcl --dry-run && \
 	wget -O plugins/onebot-mirai-0.3.4-all.jar https://github.com/yyuueexxiinngg/onebot-kotlin/releases/download/0.3.4/onebot-mirai-0.3.4-all.jar
