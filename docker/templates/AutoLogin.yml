@@ -1,5 +1,5 @@
 accounts: 
-    account: $QQ_ID
+  - account: $QQ_ID
     password: 
       # 密码种类, 可选 PLAIN 或 MD5
       kind: PLAIN
