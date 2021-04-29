@@ -22,7 +22,7 @@ services:
       - 11180:8080
   cqhttp:
     restart: always
-    image: nanahira/docker-mirai-cqhttp:x
+    image: git-registry.mycard.moe/nanahira/docker-mirai-cqhttp:x
     ports:
       - '6700:6700'
     volumes:
