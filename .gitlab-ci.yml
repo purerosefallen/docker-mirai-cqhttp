@@ -5,7 +5,9 @@ stages:
 variables:
   GIT_DEPTH: "1"
   CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_TEST_IMAGE_X: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-x
   CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  CONTAINER_RELEASE_IMAGE_X: $CI_REGISTRY_IMAGE:X
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -16,16 +18,18 @@ build:
     - docker
   script:
     - docker build --pull -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
+    - docker -t $CONTAINER_TEST_IMAGE_X -f Dockerfile.x --build-arg BASE_IMAGE=$CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE $CONTAINER_TEST_IMAGE_X
 
 deploy_latest:
   stage: deploy
   tags: 
     - docker
   script:
-    - docker pull $CONTAINER_TEST_IMAGE
+    - docker pull $CONTAINER_TEST_IMAGE $CONTAINER_TEST_IMAGE_X
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE_X $CONTAINER_RELEASE_IMAGE_X
+    - docker push $CONTAINER_RELEASE_IMAGE $CONTAINER_RELEASE_IMAGE_X
   only:
     - master
 
@@ -35,9 +39,11 @@ deploy_tag:
     - docker
   variables:
     CONTAINER_TAG_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    CONTAINER_TAG_IMAGE_X: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-x
   script:
-    - docker pull $CONTAINER_TEST_IMAGE
+    - docker pull $CONTAINER_TEST_IMAGE $CONTAINER_TEST_IMAGE_X
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_TAG_IMAGE
-    - docker push $CONTAINER_TAG_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE_X $CONTAINER_TAG_IMAGE_X
+    - docker push $CONTAINER_TAG_IMAGE $CONTAINER_TAG_IMAGE_X
   only:
     - tags
