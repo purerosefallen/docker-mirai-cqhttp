@@ -19,31 +19,52 @@ build:
   script:
     - docker build --pull -t $CONTAINER_TEST_IMAGE .
     - docker build -t $CONTAINER_TEST_IMAGE_X -f Dockerfile.x --build-arg BASE_IMAGE=$CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE $CONTAINER_TEST_IMAGE_X
+    - docker push $CONTAINER_TEST_IMAGE
+    - docker push $CONTAINER_TEST_IMAGE_X
 
 deploy_latest:
   stage: deploy
   tags: 
     - docker
   script:
-    - docker pull $CONTAINER_TEST_IMAGE $CONTAINER_TEST_IMAGE_X
+    - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE_X $CONTAINER_RELEASE_IMAGE_X
-    - docker push $CONTAINER_RELEASE_IMAGE $CONTAINER_RELEASE_IMAGE_X
+    - docker push $CONTAINER_RELEASE_IMAGE
   only:
     - master
 
-deploy_tag:
+deploy_latest_x:
+  stage: deploy
+  tags: 
+    - docker
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE_X
+    - docker tag $CONTAINER_TEST_IMAGE_X $CONTAINER_RELEASE_IMAGE_X
+    - docker push $CONTAINER_RELEASE_IMAGE_X
+  only:
+    - master
+
+deploy_tag_x:
   stage: deploy
   tags: 
     - docker
   variables:
     CONTAINER_TAG_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-    CONTAINER_TAG_IMAGE_X: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-x
   script:
-    - docker pull $CONTAINER_TEST_IMAGE $CONTAINER_TEST_IMAGE_X
+    - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_TAG_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE_X $CONTAINER_TAG_IMAGE_X
-    - docker push $CONTAINER_TAG_IMAGE $CONTAINER_TAG_IMAGE_X
+    - docker push $CONTAINER_TAG_IMAGE
+  only:
+    - tags
+deploy_tag:
+  stage: deploy
+  tags: 
+    - docker
+  variables:
+    CONTAINER_TAG_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-x
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE_X
+    - docker tag $CONTAINER_TEST_IMAGE_X $CONTAINER_TAG_IMAGE
+    - docker push $CONTAINER_TAG_IMAGE
   only:
     - tags
