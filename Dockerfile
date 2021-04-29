@@ -13,7 +13,7 @@ RUN wget -O mcl.zip https://github.com/iTXTech/mirai-console-loader/releases/dow
 	mkdir plugins && \
 	wget -O plugins/onebot-mirai.jar https://github.com/yyuueexxiinngg/onebot-kotlin/releases/download/0.3.4/onebot-mirai-0.3.4-all.jar
 
-COPY ./docker ./
+COPY ./docker ./docker
 
 ENV ENV_CONFIG 1
 ENV QQ_ID 11111111
