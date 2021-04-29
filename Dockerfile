@@ -9,7 +9,7 @@ RUN wget -O mcl.zip https://github.com/iTXTech/mirai-console-loader/releases/dow
 	unzip -q ./mcl.zip && \
 	rm mcl.zip && \
 	chmod +x ./mcl && \
-	./mcl --dry-run && \
+	./mcl --dry-run > /dev/null && \
 	wget -O plugins/onebot-mirai.jar https://github.com/yyuueexxiinngg/onebot-kotlin/releases/download/0.3.4/onebot-mirai-0.3.4-all.jar
 
 COPY ./docker ./
