@@ -27,7 +27,7 @@ build:
   script:
     - docker build --pull --no-cache -t $CONTAINER_TEST_IMAGE_LITE .
     - docker build -t $CONTAINER_TEST_IMAGE_X -f Dockerfile.x --build-arg BASE_IMAGE=$CONTAINER_TEST_IMAGE_LITE .
-    - docker build -t $CONTAINER_TEST_IMAGE_NOVNC -f Dockerfile.xnovnc --build-arg BASE_IMAGE=$CONTAINER_TEST_IMAGE_X .
+    - docker build -t $CONTAINER_TEST_IMAGE_NOVNC -f Dockerfile.novnc --build-arg BASE_IMAGE=$CONTAINER_TEST_IMAGE_X .
     - docker tag $CONTAINER_TEST_IMAGE_NOVNC $CONTAINER_TEST_IMAGE
     - docker push $CONTAINER_TEST_IMAGE_LITE
     - docker push $CONTAINER_TEST_IMAGE_X
