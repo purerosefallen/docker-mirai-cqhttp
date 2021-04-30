@@ -70,11 +70,13 @@ services:
 
 ## Tag
 
-* `latest` 无 GUI 镜像。需要有现成的 `devices.json` 文件。
+* `lite` 无 GUI 镜像。需要有现成的 `devices.json` 文件。
 
 * `x` 带 GUI 镜像，需要配合 noVNC 使用以拉滑块。
 
 * `novnc` 带 GUI 和 noVNC 镜像，可以直接拉滑块。noVNC 监听在 8080 端口。
+
+* `latest` 同 `novnc`。
 
 ## 环境变量
 
