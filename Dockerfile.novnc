@@ -22,6 +22,5 @@ ENV HOME=/root \
 	DISPLAY_HEIGHT=900 \
 	VNC_PASS=nanahira
 
-#COPY ./novnc-supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./pm2-novnc.json /usr/src/app/pm2-novnc.json
 CMD ["pm2-docker", "/usr/src/app/pm2-novnc.json"]
