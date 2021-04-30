@@ -1,0 +1,26 @@
+ARG BASE_IMAGE=git-registry.mycard.moe/nanahira/docker-mirai-cqhttp:x
+FROM ${BASE_IMAGE}
+
+RUN apt update && \
+	apt -y install python3 git x11vnc xvfb socat fluxbox npm && \
+	npm install -g pm2 && \
+	git clone --depth=1 https://github.com/kanaka/noVNC.git /usr/src/noVNC && \
+	git clone --depth=1 https://github.com/kanaka/websockify.git /usr/src/noVNC/utils/websockify \
+	&& sed -i -- "s/ps -p/ps -o pid | grep/g" /usr/src/noVNC/utils/launch.sh \
+	&& rm -rf /usr/src/noVNC/.git /usr/src/noVNC/utils/websockify/.git \
+	&& apt -y purge git \
+	&& apt -y autoremove && \
+	rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
+
+ENV HOME=/root \
+	DEBIAN_FRONTEND=noninteractive \
+	LANG=en_US.UTF-8 \
+	LANGUAGE=en_US.UTF-8 \
+	LC_ALL=C.UTF-8 \
+	DISPLAY=:0.0 \
+	DISPLAY_WIDTH=500 \
+	DISPLAY_HEIGHT=900 \
+	VNC_PASS=nanahira
+
+COPY ./pm2-novnc.json /usr/src/app/pm2-novnc.json
+CMD ["pm2-docker", "/usr/src/app/pm2-novnc.json"]

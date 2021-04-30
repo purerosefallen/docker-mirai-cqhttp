@@ -8,6 +8,30 @@ https://github.com/purerosefallen/docker-mirai-cqhttp
 
 ## 建议 docker-compose
 
+### `novnc` 镜像
+
+```yaml
+version: '2.4'
+services:
+  cqhttp:
+    restart: always
+    image: git-registry.mycard.moe/nanahira/docker-mirai-cqhttp:novnc
+    ports:
+      - '6700:6700'
+    volumes:
+      - ./data:/usr/src/app/data
+      - ./config:/usr/src/app/config
+      - ./bots:/usr/src/app/bots
+    environment:
+      QQ_ID: 11111111
+      QQ_PASS: change_me
+      WS_PORT: 6700
+      WS_TOKEN: change_me
+      VNC_PASS: change_me
+```
+
+### `x` 镜像
+
 ```yaml
 version: '2.4'
 services:
@@ -30,7 +54,6 @@ services:
       - ./config:/usr/src/app/config
       - ./bots:/usr/src/app/bots
     stdin_open: true
-    command: java -jar mcl.jar
     environment:
       DISPLAY: novnc:0.0
       QQ_ID: 11111111
@@ -47,9 +70,13 @@ services:
 
 ## Tag
 
-* `latest` 无 GUI 镜像。需要有现成的 `devices.json` 文件。
+* `lite` 无 GUI 镜像。需要有现成的 `devices.json` 文件。
 
-* `x` **推荐。** 带 GUI 镜像，需要配合 noVNC 使用以拉滑块。
+* `x` 带 GUI 镜像，需要配合 noVNC 使用以拉滑块。
+
+* `novnc` 带 GUI 和 noVNC 镜像，可以直接拉滑块。noVNC 监听在 8080 端口。
+
+* `latest` 同 `novnc`。
 
 ## 环境变量
 
@@ -61,6 +88,7 @@ ENV QQ_ID 11111111
 ENV QQ_PASS qweqwe
 ENV WS_PORT 6700
 ENV WS_TOKEN qweqwe
+ENV VNC_PASS nanahira
 ```
 
 ### 说明
@@ -74,3 +102,5 @@ ENV WS_TOKEN qweqwe
 * `WS_PORT` Websocket 端口。
 
 * `WS_TOKEN` Websocket 使用的密钥。
+
+* `VNC_PASS` 仅限 `novnc` 镜像。noVNC 网页密码，默认 `nanahira`。

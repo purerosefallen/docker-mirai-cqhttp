@@ -1,0 +1,35 @@
+{
+  "apps": [
+    {
+      "name": "x11",
+      "script": "bash",
+      "args": " -c 'Xvfb :0 -screen 0 ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT}x24'"
+    },
+    {
+      "name": "x11vnc",
+      "script": "bash",
+      "args": " -c '/usr/bin/x11vnc -passwd ${VNC_PASS}'"
+    },
+    {
+      "name": "novnc",
+      "script": "/usr/src/noVNC/utils/launch.sh",
+      "args": "--vnc localhost:5900 --listen 8080",
+      "interpreter": "bash"
+    },
+    {
+      "name": "socat",
+      "script": "socat",
+      "args": "tcp-listen:6000,reuseaddr,fork unix:/tmp/.X11-unix/X0"
+    },
+    {
+      "name": "fluxbox",
+      "script": "fluxbox"
+    },
+    {
+      "name": "mirai",
+      "script": "java",
+      "cwd": "/usr/src/app",
+      "args": "-jar ./mcl.jar"
+    }
+  ]
+}
