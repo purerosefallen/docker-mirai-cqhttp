@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=git-registry.mycard.moe/nanahira/docker-mirai-cqhttp:latest
+ARG BASE_IMAGE=git-registry.mycard.moe/nanahira/docker-mirai-cqhttp:lite
 FROM ${BASE_IMAGE}
 
 RUN apt update && \
