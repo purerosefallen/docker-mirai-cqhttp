@@ -7,7 +7,8 @@
     },
     {
       "name": "x11vnc",
-      "script": "/usr/bin/x11vnc"
+      "script": "bash",
+      "args": " -c '/usr/bin/x11vnc -passwd ${VNC_PASS}'"
     },
     {
       "name": "novnc",
@@ -19,6 +20,10 @@
       "name": "socat",
       "script": "socat",
       "args": "tcp-listen:6000,reuseaddr,fork unix:/tmp/.X11-unix/X0"
+    },
+    {
+      "name": "fluxbox",
+      "script": "fluxbox"
     },
     {
       "name": "mirai",
